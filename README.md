@@ -1,6 +1,6 @@
 # Purchase Guardian
 
-Prototype **V1.1 mobile-first** de Purchase Guardian, pensé pour être testé sur iPhone.
+**V1.2 mobile-first** de Purchase Guardian, pensée pour un test sur iPhone via Safari / PWA.
 
 ## Concept
 
@@ -9,62 +9,65 @@ Purchase Guardian aide à éviter de perdre de l'argent après un achat :
 - suivi des délais de retour ;
 - suivi des remboursements ;
 - suivi des garanties ;
-- conservation logique des achats ;
+- conservation des preuves d'achat ;
 - indicateur **Money Protected**.
 
 ## Offre de lancement
 
 Prix fondateur prévu : **9,99 € pendant 14 jours** après le lancement.
 
-## V1.1
+## V1.2
 
-Cette version est maintenant interactive :
+- ajout, modification et suppression d'achats ;
+- stockage local via `localStorage` ;
+- dashboard dynamique ;
+- filtres retours / remboursements / garanties ;
+- suivi des remboursements et calcul Money Protected ;
+- capture photo réelle sur iPhone via `input capture=environment` ;
+- import d'une photo depuis la photothèque ;
+- compression locale de l'image avant analyse ;
+- OCR réel dans le navigateur avec Tesseract.js ;
+- pré-remplissage automatique du magasin, du prix et de la date quand ils sont détectés ;
+- vérification manuelle avant enregistrement ;
+- service worker et cache PWA de base ;
+- safe areas iPhone.
 
-- stockage local réel via `localStorage` ;
-- ajout d'achats ;
-- modification et suppression ;
-- statuts : à surveiller, retour possible, remboursement, garantie active, terminé ;
-- dates de retour et garantie ;
-- suivi d'un remboursement ;
-- calcul dynamique de **Money Protected** ;
-- filtres d'achats ;
-- onglets Accueil / Achats / Ajouter / Garanties ;
-- scan OCR simulé pour tester le parcours ;
-- safe areas iPhone ;
-- PWA standalone ;
-- service worker avec cache hors ligne basique.
+## Important sur l'OCR
+
+L'OCR de cette V1.2 est une première implémentation. Il fonctionne côté navigateur avec Tesseract.js. Le script et les modèles OCR nécessitent une connexion Internet au premier chargement. Les tickets réels peuvent varier fortement : l'utilisateur doit toujours vérifier les champs détectés avant d'enregistrer.
+
+Les images ne sont pas envoyées à un backend Purchase Guardian dans cette V1.2. L'objectif est de valider l'expérience avant de construire une infrastructure serveur.
 
 ## Tester sur iPhone
 
-Une fois GitHub Pages activé :
+Une fois le site publié en HTTPS :
 
-1. ouvrir l'URL GitHub Pages dans Safari ;
+1. ouvrir le site dans Safari ;
 2. toucher **Partager** ;
-3. choisir **Ajouter à l'écran d'accueil**.
+3. choisir **Ajouter à l'écran d'accueil** ;
+4. ouvrir Purchase Guardian ;
+5. choisir **Scanner un reçu** ;
+6. prendre une photo du ticket ou choisir une photo existante ;
+7. lancer l'analyse puis vérifier les champs détectés.
 
-Les achats créés dans cette V1.1 sont stockés uniquement dans le navigateur de l'appareil utilisé.
+## Roadmap
 
-## Limites actuelles
+### V1.3
+- meilleure détection des totaux et enseignes françaises ;
+- calcul assisté des deadlines de retour ;
+- photo du justificatif associée à l'achat ;
+- recherche et tri ;
+- sauvegarde IndexedDB au lieu de localStorage pour les fichiers ;
+- amélioration du fonctionnement hors ligne.
 
-- pas encore de backend ni de compte utilisateur ;
-- pas de synchronisation entre appareils ;
-- OCR/caméra encore simulés ;
-- pas encore de notifications push réelles ;
-- pas encore de règles automatiques par enseigne ;
-- pas encore de paiement intégré.
-
-## Prochaines étapes
-
-- scan photo réel ;
-- OCR réel ;
-- ajout de photo de facture ;
-- notifications de deadlines ;
-- import e-mail ;
-- règles France pour retours/garanties avec niveau de confiance ;
-- synchronisation cloud ;
-- icônes PWA ;
-- module Trial / Subscription Guardian après validation du cœur produit.
+### Ensuite
+- notifications ;
+- import email / facture ;
+- Refund Watchdog ;
+- assistant de réclamation ;
+- suivi de baisse de prix ;
+- module essais / abonnements.
 
 ## Statut
 
-**V1.1 — prototype fonctionnel de validation, pas encore une application de production.**
+Prototype de validation. **Pas encore une application de production ni un conseiller juridique sur les droits de retour ou de garantie.**
