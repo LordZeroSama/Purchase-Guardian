@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0b0d12" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Purchase Guardian" />
+  <link rel="manifest" href="manifest.json" />
+  <title>Purchase Guardian</title>
+  <style>
+    :root{--bg:#0b0d12;--card:#151922;--text:#f4f7fb;--muted:#98a2b3;--line:#262c38;--accent:#7cf2b0;--warn:#ffc85c;--danger:#ff6b79;--blue:#77b9ff}
+    *{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif}
+    body{min-height:100vh;padding:calc(env(safe-area-inset-top) + 10px) 16px calc(env(safe-area-inset-bottom) + 96px)}
+    .app{max-width:480px;margin:0 auto}.top{display:flex;justify-content:space-between;align-items:center;margin:6px 0 18px}.brand{font-weight:800;font-size:20px;letter-spacing:-.4px}.badge{font-size:12px;color:#0b0d12;background:var(--accent);font-weight:700;padding:7px 10px;border-radius:999px}
+    .hero{background:linear-gradient(180deg,#182029,#11161d);border:1px solid var(--line);padding:20px;border-radius:24px;box-shadow:0 16px 44px rgba(0,0,0,.28)}.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-weight:700}.money{font-size:44px;font-weight:850;letter-spacing:-2px;margin:6px 0}.money small{font-size:18px;color:var(--muted);font-weight:650}.sub{color:var(--muted);font-size:14px;line-height:1.5}
+    .promo{margin-top:16px;background:#0e2017;border:1px solid #285f43;border-radius:18px;padding:14px}.promo strong{color:var(--accent)}.promo .timer{font-size:12px;color:#b7c8bd;margin-top:6px}.section-title{font-weight:800;font-size:17px;margin:24px 2px 12px}.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:16px;margin-bottom:12px}.row{display:flex;align-items:center;justify-content:space-between;gap:12px}.left{display:flex;align-items:center;gap:12px}.icon{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:#202633;font-size:21px}.title{font-weight:750;font-size:15px}.meta{font-size:12px;color:var(--muted);margin-top:3px}.pill{font-size:11px;font-weight:750;border-radius:999px;padding:6px 8px;white-space:nowrap}.green{background:#123922;color:var(--accent)}.yellow{background:#3b2e10;color:var(--warn)}.red{background:#3a1620;color:#ff9aa4}.blue{background:#142a42;color:var(--blue)}
+    .progress{height:7px;background:#242a35;border-radius:999px;margin-top:13px;overflow:hidden}.bar{height:100%;border-radius:999px}.quick{display:grid;grid-template-columns:1fr 1fr;gap:10px}button{font:inherit}.action{background:var(--card);border:1px solid var(--line);color:var(--text);border-radius:18px;padding:16px;text-align:left;font-weight:750}.action span{display:block;color:var(--muted);font-size:12px;font-weight:500;margin-top:5px}.primary{width:100%;border:0;border-radius:18px;background:var(--accent);color:#0b0d12;padding:15px 18px;font-weight:850;margin-top:10px}
+    .sheet-wrap{position:fixed;inset:0;background:rgba(0,0,0,.58);display:none;align-items:flex-end;z-index:20}.sheet{width:100%;max-width:520px;margin:0 auto;background:#10141b;border:1px solid var(--line);border-radius:28px 28px 0 0;padding:20px 16px calc(env(safe-area-inset-bottom) + 20px)}.sheet h3{margin:0 0 16px;font-size:20px}input,select{width:100%;background:#171c25;color:var(--text);border:1px solid var(--line);border-radius:14px;padding:14px;margin:7px 0;font-size:16px}.cancel{width:100%;background:transparent;color:var(--muted);border:0;padding:13px}.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom) + 84px);background:#1b2230;border:1px solid var(--line);padding:11px 14px;border-radius:14px;display:none;z-index:30;font-size:13px}
+    .nav{position:fixed;left:0;right:0;bottom:0;background:rgba(11,13,18,.94);backdrop-filter:blur(18px);border-top:1px solid var(--line);padding:10px 16px calc(env(safe-area-inset-bottom) + 10px)}.nav-inner{max-width:480px;margin:auto;display:flex;justify-content:space-around}.nav-item{color:var(--muted);font-size:11px;text-align:center}.nav-item b{display:block;font-size:20px;margin-bottom:2px}.nav-item.active{color:var(--accent)}
+  </style>
+</head>
+<body>
+<div class="app">
+  <div class="top"><div class="brand">Purchase Guardian</div><div class="badge">V1 Preview</div></div>
+  <section class="hero">
+    <div class="eyebrow">Money protected</div><div class="money">137,42 € <small>cette année</small></div>
+    <div class="sub">Retours, remboursements et garanties suivis depuis un seul endroit.</div>
+    <div class="promo"><strong>Offre lancement — 9,99 €</strong><div class="timer">Prix fondateur valable pendant 14 jours après le lancement.</div></div>
+  </section>
+  <div class="section-title">À surveiller</div>
+  <div class="card"><div class="row"><div class="left"><div class="icon">🎧</div><div><div class="title">AirPods Pro</div><div class="meta">Fnac · 279,00 €</div></div></div><div class="pill yellow">Retour · 3 j</div></div><div class="progress"><div class="bar" style="width:84%;background:var(--warn)"></div></div></div>
+  <div class="card"><div class="row"><div class="left"><div class="icon">📦</div><div><div class="title">Clavier mécanique</div><div class="meta">Amazon · remboursement attendu 89,99 €</div></div></div><div class="pill red">En attente</div></div><button class="primary" onclick="markRefund()">Marquer remboursé</button></div>
+  <div class="card"><div class="row"><div class="left"><div class="icon">💻</div><div><div class="title">Écran 27&quot;</div><div class="meta">Boulanger · garantie jusqu’au 18/11/2027</div></div></div><div class="pill green">Protégé</div></div></div>
+  <div class="section-title">Actions rapides</div>
+  <div class="quick"><button class="action" onclick="openSheet()">＋ Ajouter un achat<span>Ticket, facture ou saisie rapide</span></button><button class="action" onclick="fakeScan()">▣ Scanner un reçu<span>Démo OCR simulée</span></button><button class="action" onclick="showToast('Module remboursement ouvert')">↩ Suivre un retour<span>Attente → remboursement</span></button><button class="action" onclick="showToast('Module garantie ouvert')">🛡 Garantie<span>Facture + échéance</span></button></div>
+</div>
+<div class="sheet-wrap" id="sheetWrap" onclick="if(event.target===this)closeSheet()"><div class="sheet"><h3>Ajouter un achat</h3><input id="product" placeholder="Produit" value="Casque Sony WH-1000XM5"><input id="store" placeholder="Magasin" value="Amazon.fr"><input id="price" type="number" step="0.01" placeholder="Prix" value="299"><select id="status"><option>À surveiller</option><option>Retour possible</option><option>En remboursement</option><option>Garantie active</option></select><button class="primary" onclick="savePurchase()">Ajouter à Guardian</button><button class="cancel" onclick="closeSheet()">Annuler</button></div></div>
+<div class="toast" id="toast"></div>
+<div class="nav"><div class="nav-inner"><div class="nav-item active"><b>⌂</b>Accueil</div><div class="nav-item"><b>◫</b>Achats</div><div class="nav-item"><b>＋</b>Ajouter</div><div class="nav-item"><b>🛡</b>Garanties</div></div></div>
+<script>
+const sheet=document.getElementById('sheetWrap');const toast=document.getElementById('toast');function openSheet(){sheet.style.display='flex'}function closeSheet(){sheet.style.display='none'}function showToast(msg){toast.textContent=msg;toast.style.display='block';setTimeout(()=>toast.style.display='none',1800)}function savePurchase(){const p=document.getElementById('product').value||'Nouvel achat';closeSheet();showToast(p+' ajouté ✓')}function fakeScan(){showToast('Reçu détecté : Fnac · 129,99 € ✓')}function markRefund(){showToast('89,99 € ajoutés à Money Protected ✓')}
+</script>
+</body>
+</html>
