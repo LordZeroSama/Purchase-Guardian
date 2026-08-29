@@ -1,5 +1,5 @@
 const CACHE='purchase-guardian-v1.3';
-const CORE=['./','./index.html','./manifest.json','./styles.css','./receipt-engine.js','./app.js'];
+const CORE=['./','./index.html','./manifest.json','./styles.css','./receipt-engine.js','./app.js','./icon.svg'];
 self.addEventListener('install',event=>{
   event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(CORE)).then(()=>self.skipWaiting()));
 });
