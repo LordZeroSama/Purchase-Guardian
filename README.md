@@ -1,42 +1,75 @@
 # Purchase Guardian
 
-**V1.2 mobile-first** de Purchase Guardian, pensée pour un test sur iPhone via Safari / PWA.
+**V1.3 France Receipt Engine** — prototype mobile-first pensé pour être testé sur iPhone via Safari / PWA.
 
 ## Concept
 
 Purchase Guardian aide à éviter de perdre de l'argent après un achat :
 
+- conservation de la preuve d'achat ;
 - suivi des délais de retour ;
 - suivi des remboursements ;
 - suivi des garanties ;
-- conservation des preuves d'achat ;
-- indicateur **Money Protected**.
+- indicateur **Money Protected** ;
+- scan de tickets et extraction automatique d'informations.
 
-## Offre de lancement
+## Offre de lancement envisagée
 
-Prix fondateur prévu : **9,99 € pendant 14 jours** après le lancement.
+Prix fondateur prévu : **9,99 € pendant 14 jours** après le lancement public.
 
-## V1.2
+## V1.3
 
-- ajout, modification et suppression d'achats ;
-- stockage local via `localStorage` ;
-- dashboard dynamique ;
+### France Receipt Engine
+
+Le moteur OCR tente maintenant d'extraire :
+
+- l'enseigne ;
+- le montant total ;
+- la date d'achat ;
+- le canal probable (en ligne / magasin) ;
+- un niveau de confiance.
+
+Le moteur reconnaît notamment des enseignes courantes comme Fnac, Darty, Boulanger, Amazon.fr, Cdiscount, Carrefour, E.Leclerc, Auchan, Intermarché, Lidl, Aldi, Decathlon, IKEA, Leroy Merlin, Castorama, Sephora, Zara, H&M, Apple, Samsung, Micromania et d'autres.
+
+### Photos de reçus
+
+- prise de photo depuis l'iPhone ;
+- import depuis la photothèque ;
+- compression et prétraitement local de l'image ;
+- OCR avec Tesseract.js ;
+- stockage de la photo dans **IndexedDB** plutôt que dans localStorage ;
+- prévisualisation du reçu depuis la fiche achat.
+
+### Échéances
+
+La V1.3 peut proposer une estimation à partir de :
+
+- la date d'achat ;
+- la date de livraison ;
+- le canal d'achat ;
+- un délai de retour indiqué par le commerçant ;
+- une durée de garantie renseignée.
+
+Les estimations sont volontairement présentées comme **indicatives** : les règles applicables dépendent du produit, du canal de vente, du vendeur et de la situation. L'utilisateur doit vérifier les conditions réelles avant d'agir.
+
+### Autres fonctions
+
+- ajout / modification / suppression d'achats ;
 - filtres retours / remboursements / garanties ;
-- suivi des remboursements et calcul Money Protected ;
-- capture photo réelle sur iPhone via `input capture=environment` ;
-- import d'une photo depuis la photothèque ;
-- compression locale de l'image avant analyse ;
-- OCR réel dans le navigateur avec Tesseract.js ;
-- pré-remplissage automatique du magasin, du prix et de la date quand ils sont détectés ;
-- vérification manuelle avant enregistrement ;
-- service worker et cache PWA de base ;
-- safe areas iPhone.
+- remboursement reçu → ajout automatique dans **Money Protected** ;
+- stockage local des métadonnées ;
+- cache PWA ;
+- interface adaptée aux safe areas iPhone.
 
-## Important sur l'OCR
+## Structure
 
-L'OCR de cette V1.2 est une première implémentation. Il fonctionne côté navigateur avec Tesseract.js. Le script et les modèles OCR nécessitent une connexion Internet au premier chargement. Les tickets réels peuvent varier fortement : l'utilisateur doit toujours vérifier les champs détectés avant d'enregistrer.
-
-Les images ne sont pas envoyées à un backend Purchase Guardian dans cette V1.2. L'objectif est de valider l'expérience avant de construire une infrastructure serveur.
+- `index.html` — interface ;
+- `styles.css` — design mobile ;
+- `app.js` — logique de l'application et stockage ;
+- `receipt-engine.js` — analyse des tickets français ;
+- `service-worker.js` — cache PWA ;
+- `manifest.json` — configuration PWA ;
+- `icon.svg` — icône provisoire.
 
 ## Tester sur iPhone
 
@@ -45,29 +78,24 @@ Une fois le site publié en HTTPS :
 1. ouvrir le site dans Safari ;
 2. toucher **Partager** ;
 3. choisir **Ajouter à l'écran d'accueil** ;
-4. ouvrir Purchase Guardian ;
-5. choisir **Scanner un reçu** ;
-6. prendre une photo du ticket ou choisir une photo existante ;
-7. lancer l'analyse puis vérifier les champs détectés.
+4. ouvrir Purchase Guardian depuis l'icône ;
+5. tester un vrai ticket avec **Scanner un ticket**.
 
-## Roadmap
+Le premier OCR nécessite une connexion pour charger le moteur et les données linguistiques. Les analyses suivantes peuvent profiter du cache navigateur.
 
-### V1.3
-- meilleure détection des totaux et enseignes françaises ;
-- calcul assisté des deadlines de retour ;
-- photo du justificatif associée à l'achat ;
-- recherche et tri ;
-- sauvegarde IndexedDB au lieu de localStorage pour les fichiers ;
-- amélioration du fonctionnement hors ligne.
+## Limites actuelles
 
-### Ensuite
-- notifications ;
-- import email / facture ;
-- Refund Watchdog ;
-- assistant de réclamation ;
-- suivi de baisse de prix ;
-- module essais / abonnements.
+- l'OCR peut confondre certains montants ou dates ;
+- le nom précis du produit doit encore souvent être corrigé manuellement ;
+- aucune synchronisation cloud ou compte utilisateur ;
+- aucune notification push distante ;
+- aucune connexion automatique à une boîte mail ;
+- aucune règle commerciale par enseigne n'est considérée comme garantie juridiquement.
+
+## Prochaine étape possible
+
+**V1.4 — Merchant Profiles & Smart Returns** : profils par enseigne, meilleur choix du vrai total, import de factures numériques, notifications locales et suivi retour → colis → remboursement.
 
 ## Statut
 
-Prototype de validation. **Pas encore une application de production ni un conseiller juridique sur les droits de retour ou de garantie.**
+Prototype de validation. Pas encore une application de production.
