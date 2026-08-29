@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0b0d12">
+  <title>Mise à jour Purchase Guardian</title>
+  <style>
+    *{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;background:#0b0d12;color:#f4f7fb;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;padding:24px}.box{width:min(100%,420px);background:#151922;border:1px solid #262c38;border-radius:24px;padding:24px;text-align:center}.logo{font-size:44px}.title{font-size:24px;font-weight:850;margin:12px 0 8px}.muted{color:#98a2b3;line-height:1.5}.bar{height:8px;background:#242a35;border-radius:999px;overflow:hidden;margin:22px 0}.fill{height:100%;width:15%;background:#7cf2b0;border-radius:999px;transition:width .3s}.status{font-size:13px;color:#b7c8bd}.retry{display:none;margin-top:18px;border:0;background:#7cf2b0;color:#08110c;font-weight:850;padding:14px 18px;border-radius:15px;width:100%}
+  </style>
+</head>
+<body>
+  <div class="box">
+    <div class="logo">🛡️</div>
+    <div class="title">Mise à jour Purchase Guardian</div>
+    <div class="muted">Suppression de l’ancienne V1.1 et chargement de la dernière version.</div>
+    <div class="bar"><div class="fill" id="fill"></div></div>
+    <div class="status" id="status">Préparation…</div>
+    <button class="retry" id="retry" onclick="location.reload()">Réessayer</button>
+  </div>
+<script>
+(async()=>{
+  const status=document.getElementById('status');
+  const fill=document.getElementById('fill');
+  const retry=document.getElementById('retry');
+  try{
+    status.textContent='Désactivation de l’ancienne application…';fill.style.width='35%';
+    if('serviceWorker' in navigator){
+      const regs=await navigator.serviceWorker.getRegistrations();
+      await Promise.all(regs.map(r=>r.unregister()));
+    }
+    status.textContent='Suppression des anciens fichiers en cache…';fill.style.width='65%';
+    if('caches' in window){
+      const keys=await caches.keys();
+      await Promise.all(keys.map(k=>caches.delete(k)));
+    }
+    try{localStorage.removeItem('purchaseGuardian.forceRefresh')}catch(e){}
+    status.textContent='Dernière version prête ✓';fill.style.width='100%';
+    await new Promise(r=>setTimeout(r,600));
+    location.replace('./?fresh=1.3.1&t='+Date.now());
+  }catch(err){
+    console.error(err);status.textContent='La mise à jour automatique a échoué. Réessaie.';retry.style.display='block';
+  }
+})();
+</script>
+</body>
+</html>
