@@ -1,11 +1,11 @@
-const META_KEY='purchaseGuardian.v1_3';
-const OLD_KEYS=['purchaseGuardian.v1_2','purchaseGuardian.v1_1'];
+const META_KEY='purchaseGuardian.v1_4';
+const OLD_KEYS=['purchaseGuardian.v1_3','purchaseGuardian.v1_2','purchaseGuardian.v1_1'];
 const DB_NAME='purchaseGuardianDB';
 const STORE='receipts';
 const seed=[
-  {id:'demo1',product:'AirPods Pro',store:'Fnac',price:279,purchaseDate:'2026-08-20',channel:'store',deliveryDate:'',status:'return',returnDate:'2026-08-31',warrantyDate:'2028-08-20',refundAmount:0,protectedAmount:0,icon:'🎧',confidence:null},
-  {id:'demo2',product:'Clavier mécanique',store:'Amazon.fr',price:89.99,purchaseDate:'2026-08-15',channel:'online',deliveryDate:'2026-08-17',status:'refund',returnDate:'2026-08-31',warrantyDate:'2028-08-17',refundAmount:89.99,protectedAmount:0,icon:'📦',confidence:null},
-  {id:'demo3',product:'Écran 27\"',store:'Boulanger',price:249.99,purchaseDate:'2026-05-18',channel:'store',deliveryDate:'',status:'protected',returnDate:'',warrantyDate:'2028-05-18',refundAmount:0,protectedAmount:47.43,icon:'💻',confidence:null}
+  {id:'demo1',product:'AirPods Pro',brand:'Apple',barcode:'',barcodeFormat:'',barcodeSource:'',store:'Fnac',price:279,purchaseDate:'2026-08-20',channel:'store',deliveryDate:'',status:'return',returnDate:'2026-08-31',warrantyDate:'2028-08-20',refundAmount:0,protectedAmount:0,icon:'🎧',confidence:null},
+  {id:'demo2',product:'Clavier mécanique',brand:'',barcode:'',barcodeFormat:'',barcodeSource:'',store:'Amazon.fr',price:89.99,purchaseDate:'2026-08-15',channel:'online',deliveryDate:'2026-08-17',status:'refund',returnDate:'2026-08-31',warrantyDate:'2028-08-17',refundAmount:89.99,protectedAmount:0,icon:'📦',confidence:null},
+  {id:'demo3',product:'Écran 27\"',brand:'',barcode:'',barcodeFormat:'',barcodeSource:'',store:'Boulanger',price:249.99,purchaseDate:'2026-05-18',channel:'store',deliveryDate:'',status:'protected',returnDate:'',warrantyDate:'2028-05-18',refundAmount:0,protectedAmount:47.43,icon:'💻',confidence:null}
 ];
 let items=loadItems();
 let currentFilter='all';
@@ -48,7 +48,9 @@ function card(i){
   if(i.status==='refund')extra=`Remboursement attendu ${eur(i.refundAmount)}`;
   else if(i.status==='protected'&&i.warrantyDate)extra=`Garantie jusqu’au ${fmtDate(i.warrantyDate)}`;
   const conf=confidenceLabel(i.confidence);
-  return `<div class="card"><div class="row"><div class="left"><img class="receipt-thumb" data-receipt-id="${i.id}" alt="" style="display:none"><div class="icon fallback-icon">${i.icon||'🛍️'}</div><div style="min-width:0"><div class="title">${escapeHtml(i.product||'Achat')}</div><div class="meta">${extra}${conf?` · ${conf}`:''}</div></div></div><div class="pill ${cls}">${label}</div></div><div class="card-actions">${i.status==='refund'?`<button class="small-btn" onclick="markRefund('${i.id}')">Remboursement reçu</button>`:''}<button class="small-btn" onclick="editPurchase('${i.id}')">Modifier</button><button class="small-btn" onclick="showReceipt('${i.id}')">Reçu</button><button class="small-btn danger" onclick="removePurchase('${i.id}')">Supprimer</button></div></div>`;
+  const code=i.barcode?` · ${escapeHtml(i.barcodeFormat||'Code')} ${escapeHtml(String(i.barcode).slice(0,18))}${String(i.barcode).length>18?'…':''}`:'';
+  const brand=i.brand?`${escapeHtml(i.brand)} · `:'';
+  return `<div class="card"><div class="row"><div class="left"><img class="receipt-thumb" data-receipt-id="${i.id}" alt="" style="display:none"><div class="icon fallback-icon">${i.icon||'🛍️'}</div><div style="min-width:0"><div class="title">${brand}${escapeHtml(i.product||'Achat')}</div><div class="meta">${extra}${conf?` · ${conf}`:''}${code}</div></div></div><div class="pill ${cls}">${label}</div></div><div class="card-actions">${i.status==='refund'?`<button class="small-btn" onclick="markRefund('${i.id}')">Remboursement reçu</button>`:''}<button class="small-btn" onclick="editPurchase('${i.id}')">Modifier</button><button class="small-btn" onclick="showReceipt('${i.id}')">Reçu</button><button class="small-btn danger" onclick="removePurchase('${i.id}')">Supprimer</button></div></div>`;
 }
 async function hydrateThumbnails(){
   const els=[...document.querySelectorAll('[data-receipt-id]')];
@@ -66,12 +68,12 @@ function switchView(view,filter){document.querySelectorAll('.view').forEach(v=>v
 function setFilter(filter,btn){currentFilter=filter;document.querySelectorAll('.filter').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderAll()}
 
 function resetEditor(){
-  $('editId').value='';$('product').value='';$('store').value='';$('price').value='';$('purchaseDate').value=new Date().toISOString().slice(0,10);$('channel').value='unknown';$('deliveryDate').value='';$('status').value='watch';$('returnDate').value='';$('warrantyDate').value='';$('refundAmount').value='';$('protectedAmount').value='';$('manualReturnDays').value='';$('warrantyMonths').value='24';$('deadlineHint').textContent='';$('sheetTitle').textContent='Ajouter un achat';
+  $('editId').value='';$('product').value='';$('brand').value='';$('barcode').value='';$('barcodeFormatField').value='';$('barcodeSource').value='';$('store').value='';$('price').value='';$('purchaseDate').value=new Date().toISOString().slice(0,10);$('channel').value='unknown';$('deliveryDate').value='';$('status').value='watch';$('returnDate').value='';$('warrantyDate').value='';$('refundAmount').value='';$('protectedAmount').value='';$('manualReturnDays').value='';$('warrantyMonths').value='24';$('deadlineHint').textContent='';$('barcodeHint').textContent='Tu peux scanner le code-barres du produit pour conserver sa référence exacte.';$('sheetTitle').textContent='Ajouter un achat';
 }
 function openEditor(prefill){resetEditor();if(prefill)fillEditor(prefill);$('sheetWrap').style.display='flex'}
 function closeEditor(){$('sheetWrap').style.display='none'}
 function fillEditor(i){
-  $('editId').value=i.id||'';$('sheetTitle').textContent=i.id?'Modifier l’achat':'Ajouter un achat';$('product').value=i.product||'';$('store').value=i.store||'';$('price').value=i.price??'';$('purchaseDate').value=i.purchaseDate||new Date().toISOString().slice(0,10);$('channel').value=i.channel||'unknown';$('deliveryDate').value=i.deliveryDate||'';$('status').value=i.status||'watch';$('returnDate').value=i.returnDate||'';$('warrantyDate').value=i.warrantyDate||'';$('refundAmount').value=i.refundAmount||'';$('protectedAmount').value=i.protectedAmount||'';$('warrantyMonths').value='24';
+  $('editId').value=i.id||'';$('sheetTitle').textContent=i.id?'Modifier l’achat':'Ajouter un achat';$('product').value=i.product||'';$('brand').value=i.brand||'';$('barcode').value=i.barcode||'';$('barcodeFormatField').value=i.barcodeFormat||'';$('barcodeSource').value=i.barcodeSource||'';$('store').value=i.store||'';$('price').value=i.price??'';$('purchaseDate').value=i.purchaseDate||new Date().toISOString().slice(0,10);$('channel').value=i.channel||'unknown';$('deliveryDate').value=i.deliveryDate||'';$('status').value=i.status||'watch';$('returnDate').value=i.returnDate||'';$('warrantyDate').value=i.warrantyDate||'';$('refundAmount').value=i.refundAmount||'';$('protectedAmount').value=i.protectedAmount||'';$('warrantyMonths').value='24';if(i.barcodeSource)$('barcodeHint').textContent=`Référence trouvée via ${i.barcodeSource}. Vérifie le nom du produit.`;
 }
 function editPurchase(id){const i=items.find(x=>x.id===id);if(i)openEditor(i)}
 function applyDeadlineEstimate(){
@@ -82,7 +84,7 @@ function applyDeadlineEstimate(){
 async function savePurchase(){
   const product=$('product').value.trim();const price=Number($('price').value||0);if(!product){showToast('Indique un produit');return}
   let id=$('editId').value||uid();const old=items.find(x=>x.id===id);
-  const item={id,product,store:$('store').value.trim(),price,purchaseDate:$('purchaseDate').value,channel:$('channel').value,deliveryDate:$('deliveryDate').value,status:$('status').value,returnDate:$('returnDate').value,warrantyDate:$('warrantyDate').value,refundAmount:Number($('refundAmount').value||0),protectedAmount:Number($('protectedAmount').value||0),icon:old?.icon||'🛍️',confidence:old?.confidence??scannerResult?.confidence??null,ocrText:old?.ocrText||scannerRawText||''};
+  const item={id,product,brand:$('brand').value.trim(),barcode:$('barcode').value.trim(),barcodeFormat:$('barcodeFormatField').value.trim(),barcodeSource:$('barcodeSource').value.trim(),store:$('store').value.trim(),price,purchaseDate:$('purchaseDate').value,channel:$('channel').value,deliveryDate:$('deliveryDate').value,status:$('status').value,returnDate:$('returnDate').value,warrantyDate:$('warrantyDate').value,refundAmount:Number($('refundAmount').value||0),protectedAmount:Number($('protectedAmount').value||0),icon:old?.icon||'🛍️',confidence:old?.confidence??scannerResult?.confidence??null,ocrText:old?.ocrText||scannerRawText||''};
   const idx=items.findIndex(x=>x.id===id);if(idx>=0)items[idx]=item;else items.unshift(item);
   if(scannerBlob){try{await putReceipt(id,scannerBlob)}catch(e){showToast('Achat sauvegardé, mais photo non stockée')}}
   scannerBlob=null;scannerRawText='';scannerResult=null;closeEditor();persist();switchView('purchases');showToast('Achat enregistré ✓')
@@ -109,7 +111,7 @@ function showScanResult(r){
   $('scanMerchant').textContent=r.merchant.value||'Non reconnu';$('scanTotal').textContent=r.total.value!=null?eur(r.total.value):'Non détecté';$('scanDate').textContent=r.date.value?fmtDate(r.date.value):'Non détectée';$('scanChannel').textContent=r.channel.value==='online'?'En ligne':r.channel.value==='store'?'Magasin':'À confirmer';$('scanConfidence').textContent=`Confiance globale ~${Math.round((r.confidence||0)*100)}%`;$('scanExtract').style.display='block';$('useScanBtn').style.display='block';$('scanStatus').textContent='Analyse terminée. Vérifie toujours les informations avant d’enregistrer.'
 }
 function useScanResult(){
-  if(!scannerResult)return;const r=scannerResult;closeScanner();openEditor({product:r.merchant.value?`Achat ${r.merchant.value}`:'Achat scanné',store:r.merchant.value||'',price:r.total.value??'',purchaseDate:r.date.value||new Date().toISOString().slice(0,10),channel:r.channel.value||'unknown',status:'watch',returnDate:'',warrantyDate:'',refundAmount:0,protectedAmount:0,confidence:r.confidence,ocrText:scannerRawText});$('deadlineHint').textContent='OCR appliqué. Corrige le nom du produit et vérifie le montant/date avant validation.'
+  if(!scannerResult)return;const r=scannerResult;closeScanner();openEditor({product:r.merchant.value?`Achat ${r.merchant.value}`:'Achat scanné',brand:'',barcode:'',barcodeFormat:'',barcodeSource:'',store:r.merchant.value||'',price:r.total.value??'',purchaseDate:r.date.value||new Date().toISOString().slice(0,10),channel:r.channel.value||'unknown',status:'watch',returnDate:'',warrantyDate:'',refundAmount:0,protectedAmount:0,confidence:r.confidence,ocrText:scannerRawText});$('deadlineHint').textContent='OCR appliqué. Corrige le nom du produit et vérifie le montant/date avant validation.'
 }
 async function showReceipt(id){
   const blob=await getReceipt(id);if(!blob){showToast('Aucune photo de reçu pour cet achat');return}if(receiptPreviewUrl)URL.revokeObjectURL(receiptPreviewUrl);receiptPreviewUrl=URL.createObjectURL(blob);$('receiptViewImage').src=receiptPreviewUrl;$('receiptViewWrap').style.display='flex'
@@ -120,5 +122,5 @@ function installHandlers(){
   $('cameraInput').addEventListener('change',e=>handleReceiptFile(e.target.files?.[0]));$('galleryInput').addEventListener('change',e=>handleReceiptFile(e.target.files?.[0]));
   ['purchaseDate','deliveryDate','channel','manualReturnDays','warrantyMonths'].forEach(id=>$(id).addEventListener('change',()=>{$('deadlineHint').textContent='Les dates ont changé : touche « Estimer les échéances » pour recalculer.'}));
 }
-function registerSW(){if('serviceWorker'in navigator)navigator.serviceWorker.register('./service-worker.js').catch(()=>{})}
+function registerSW(){if('serviceWorker'in navigator)navigator.serviceWorker.register('./service-worker.js?v=1.4',{updateViaCache:'none'}).catch(()=>{})}
 window.addEventListener('DOMContentLoaded',()=>{installHandlers();renderAll();registerSW()});
