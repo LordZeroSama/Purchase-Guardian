@@ -1,0 +1,14 @@
+.barcode-reader{width:100%;min-height:240px;border-radius:18px;overflow:hidden;background:#080a0e;border:1px solid var(--line)}
+.barcode-reader video{border-radius:16px!important;object-fit:cover!important}
+.barcode-reader img{max-width:100%}
+.barcode-frame-hint{font-size:10px;color:var(--muted);text-align:center;margin-top:8px;letter-spacing:.03em}
+.barcode-controls{margin-top:10px}
+.barcode-lookup{margin-top:10px;color:#b8c6bd;font-size:11px;line-height:1.45}
+.code-value{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;word-break:break-all;font-size:12px!important}
+.barcode-editor{display:flex;align-items:flex-end;gap:8px}
+.scan-inline{height:46px;margin-bottom:5px;white-space:nowrap}
+.barcode-hint{margin-top:2px}
+#barcodeReader__dashboard_section_csr,#barcodeReader__dashboard_section_swaplink,#barcodeReader__header_message{color:var(--text)!important}
+#barcodeReader__scan_region{background:#080a0e!important}
+#barcodeReader__dashboard{padding:8px!important}
+@media(max-width:390px){.barcode-editor{align-items:stretch;flex-direction:column}.scan-inline{width:100%;height:auto;margin:0}.barcode-reader{min-height:210px}}
