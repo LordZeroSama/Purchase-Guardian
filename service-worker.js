@@ -1,6 +1,6 @@
-const VERSION='1.3.1';
+const VERSION='1.4.0';
 const CACHE=`purchase-guardian-v${VERSION}`;
-const CORE=['./','./index.html','./manifest.json','./styles.css','./receipt-engine.js','./app.js','./icon.svg'];
+const CORE=['./','./index.html','./manifest.json','./styles.css','./barcode.css','./receipt-engine.js','./app.js','./barcode-scanner.js','./icon.svg'];
 
 self.addEventListener('install',event=>{
   event.waitUntil(
@@ -47,16 +47,14 @@ self.addEventListener('fetch',event=>{
   const url=new URL(event.request.url);
 
   if(url.origin!==self.location.origin){
-    event.respondWith(fetch(event.request).catch(()=>caches.match(event.request)));
+    event.respondWith(fetch(event.request).then(async response=>{
+      if(response&&response.ok){const cache=await caches.open(CACHE);cache.put(event.request,response.clone()).catch(()=>{})}
+      return response;
+    }).catch(()=>caches.match(event.request)));
     return;
   }
 
   const destination=event.request.destination;
   const isAppCode=event.request.mode==='navigate'||['document','script','style','worker'].includes(destination);
-
-  if(isAppCode){
-    event.respondWith(networkFirst(event.request));
-  }else{
-    event.respondWith(staleWhileRevalidate(event.request));
-  }
+  event.respondWith(isAppCode?networkFirst(event.request):staleWhileRevalidate(event.request));
 });
