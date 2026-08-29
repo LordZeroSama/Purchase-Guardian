@@ -1,34 +1,162 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#0b0d12"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Purchase Guardian"><link rel="manifest" href="manifest.json"><title>Purchase Guardian</title>
-<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
-<style>
-:root{--bg:#0b0d12;--card:#151922;--text:#f4f7fb;--muted:#98a2b3;--line:#262c38;--accent:#7cf2b0;--warn:#ffc85c;--danger:#ff7b88;--blue:#77b9ff}*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif}body{min-height:100vh;padding:calc(env(safe-area-inset-top) + 10px) 16px calc(env(safe-area-inset-bottom) + 94px)}button,input,select{font:inherit}.app{max-width:500px;margin:auto}.top,.row{display:flex;align-items:center;justify-content:space-between;gap:10px}.top{margin:6px 0 18px}.brand{font-weight:900;font-size:20px}.badge{font-size:11px;background:var(--accent);color:#08110c;padding:7px 10px;border-radius:999px;font-weight:900}.hero,.card,.scanbox{background:var(--card);border:1px solid var(--line);border-radius:22px}.hero{padding:20px;background:linear-gradient(180deg,#182029,#11161d)}.eyebrow{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.12em;font-weight:800}.money{font-size:42px;font-weight:950;letter-spacing:-2px;margin:6px 0}.money small{font-size:16px;color:var(--muted)}.sub,.meta,.hint{color:var(--muted);font-size:12px;line-height:1.45}.promo{margin-top:14px;padding:12px;border-radius:15px;background:#0e2017;border:1px solid #285f43}.promo strong{color:var(--accent)}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}.stat{padding:10px;border:1px solid var(--line);border-radius:14px;background:#11161d}.stat b{display:block}.stat span{font-size:10px;color:var(--muted)}.section-title{font-size:17px;font-weight:900;margin:23px 2px 11px}.card{padding:14px;margin-bottom:10px}.left{display:flex;align-items:center;gap:11px;min-width:0}.icon{width:44px;height:44px;flex:0 0 44px;border-radius:14px;background:#202633;display:grid;place-items:center;font-size:20px}.title{font-size:15px;font-weight:850;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.pill{font-size:10px;font-weight:850;padding:6px 8px;border-radius:999px;white-space:nowrap}.green{background:#123922;color:var(--accent)}.yellow{background:#3b2e10;color:var(--warn)}.red{background:#3a1620;color:#ff9aa4}.blue{background:#142a42;color:var(--blue)}.grey{background:#242a35;color:#c1c7d0}.card-actions{display:flex;gap:8px;margin-top:11px;flex-wrap:wrap}.small,.filter{border:1px solid var(--line);background:#11161d;color:var(--text);padding:8px 10px;border-radius:12px;font-size:12px;font-weight:750}.small.danger{color:#ff9aa4}.primary,.secondary{width:100%;border-radius:16px;padding:14px 16px;font-weight:900}.primary{border:0;background:var(--accent);color:#08110c}.secondary{border:1px solid var(--line);background:#171c25;color:var(--text)}.quick{display:grid;grid-template-columns:1fr 1fr;gap:10px}.action{background:var(--card);border:1px solid var(--line);color:var(--text);border-radius:18px;padding:14px;text-align:left;font-weight:850}.action span{display:block;color:var(--muted);font-size:11px;font-weight:500;margin-top:4px}.view{display:none}.view.active{display:block}.filters{display:flex;gap:7px;overflow:auto;margin-bottom:10px}.filter{color:var(--muted);border-radius:999px;white-space:nowrap}.filter.active{color:var(--accent);background:#203127;border-color:#2f5d43}.empty{border:1px dashed #313847;background:var(--card);border-radius:20px;padding:24px 16px;text-align:center;color:var(--muted)}.sheet-wrap{position:fixed;inset:0;background:rgba(0,0,0,.64);display:none;align-items:flex-end;z-index:20}.sheet{width:100%;max-width:540px;max-height:92vh;overflow:auto;margin:auto;background:#10141b;border:1px solid var(--line);border-radius:28px 28px 0 0;padding:18px 16px calc(env(safe-area-inset-bottom) + 20px)}.sheet h3{margin:0 0 12px}.grab{width:44px;height:5px;background:#363d49;border-radius:99px;margin:0 auto 14px}.label{font-size:11px;color:var(--muted);font-weight:750;margin:9px 2px 2px}input,select{width:100%;background:#171c25;color:var(--text);border:1px solid var(--line);border-radius:14px;padding:13px;margin:4px 0;font-size:16px}.split{display:grid;grid-template-columns:1fr 1fr;gap:8px}.cancel{width:100%;border:0;background:transparent;color:var(--muted);padding:13px}.scanbox{padding:14px;margin:8px 0}.preview{width:100%;max-height:260px;object-fit:contain;border-radius:15px;background:#090b0e;display:none}.progress{height:7px;background:#242a35;border-radius:999px;overflow:hidden;margin:10px 0}.progress>div{height:100%;width:0;background:var(--accent);transition:.2s}.ocrtext{white-space:pre-wrap;max-height:150px;overflow:auto;font-size:11px;color:var(--muted);background:#0b0e13;padding:9px;border-radius:12px;display:none}.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom) + 84px);background:#1b2230;border:1px solid var(--line);padding:10px 13px;border-radius:14px;display:none;z-index:30;font-size:12px;max-width:88%;text-align:center}.nav{position:fixed;left:0;right:0;bottom:0;background:rgba(11,13,18,.95);backdrop-filter:blur(18px);border-top:1px solid var(--line);padding:8px 12px calc(env(safe-area-inset-bottom) + 8px)}.nav-inner{max-width:500px;margin:auto;display:grid;grid-template-columns:repeat(4,1fr)}.nav-item{border:0;background:none;color:var(--muted);font-size:10px;text-align:center}.nav-item b{display:block;font-size:20px}.nav-item.active{color:var(--accent)}
-</style></head><body>
-<div class="app"><div class="top"><div class="brand">Purchase Guardian</div><div class="badge">V1.2</div></div>
-<main id="home" class="view active"><section class="hero"><div class="eyebrow">Money protected</div><div class="money"><span id="money">0,00 €</span> <small>cette année</small></div><div class="sub">Tes retours, remboursements et garanties. Les données restent localement sur cet appareil dans cette V1.</div><div class="stats"><div class="stat"><b id="s1">0</b><span>achats</span></div><div class="stat"><b id="s2">0</b><span>remboursés</span></div><div class="stat"><b id="s3">0</b><span>garanties</span></div></div><div class="promo"><strong>Offre lancement — 9,99 €</strong><div class="meta">Prix fondateur prévu pendant 14 jours.</div></div></section><div class="section-title">À surveiller</div><div id="watch"></div><div class="section-title">Actions rapides</div><div class="quick"><button class="action" onclick="openEditor()">＋ Ajouter<span>Saisie manuelle</span></button><button class="action" onclick="openScanner()">▣ Scanner un reçu<span>Caméra / photothèque + OCR</span></button><button class="action" onclick="go('purchases','refund')">↩ Remboursements<span>Montants en attente</span></button><button class="action" onclick="go('warranties')">🛡 Garanties<span>Protections actives</span></button></div></main>
-<main id="purchases" class="view"><div class="section-title" style="margin-top:2px">Mes achats</div><div class="filters"><button class="filter active" onclick="filterBy('all',this)">Tous</button><button class="filter" onclick="filterBy('return',this)">Retours</button><button class="filter" onclick="filterBy('refund',this)">Remboursements</button><button class="filter" onclick="filterBy('protected',this)">Garanties</button></div><div id="list"></div></main>
-<main id="add" class="view"><div class="empty"><div style="font-size:34px">📸</div><h3>Ajouter un achat</h3><p>Scanne ton ticket avec l’appareil photo ou choisis une image existante.</p><button class="primary" onclick="openScanner()">Scanner un reçu</button><button class="secondary" style="margin-top:8px" onclick="openEditor()">Saisie manuelle</button></div></main>
-<main id="warranties" class="view"><div class="section-title" style="margin-top:2px">Garanties</div><div id="warrantiesList"></div></main></div>
-<div class="sheet-wrap" id="editSheet" onclick="if(event.target===this)closeEditor()"><div class="sheet"><div class="grab"></div><h3 id="editTitle">Ajouter un achat</h3><input type="hidden" id="editId"><div class="label">Produit</div><input id="product" placeholder="Ex. AirPods Pro"><div class="split"><div><div class="label">Magasin</div><input id="store" placeholder="Fnac"></div><div><div class="label">Prix (€)</div><input id="price" type="number" step="0.01"></div></div><div class="split"><div><div class="label">Date d'achat</div><input id="purchaseDate" type="date"></div><div><div class="label">Statut</div><select id="status"><option value="watch">À surveiller</option><option value="return">Retour possible</option><option value="refund">En remboursement</option><option value="protected">Garantie active</option><option value="done">Terminé</option></select></div></div><div class="split"><div><div class="label">Deadline retour</div><input id="returnDate" type="date"></div><div><div class="label">Fin garantie</div><input id="warrantyDate" type="date"></div></div><div class="label">Montant à récupérer (€)</div><input id="refundAmount" type="number" step="0.01"><button class="primary" style="margin-top:11px" onclick="save()">Enregistrer</button><button class="cancel" onclick="closeEditor()">Annuler</button></div></div>
-<div class="sheet-wrap" id="scanSheet" onclick="if(event.target===this)closeScanner()"><div class="sheet"><div class="grab"></div><h3>Scanner un reçu</h3><div class="scanbox"><input id="receiptInput" type="file" accept="image/*" capture="environment" onchange="receiptSelected(event)"><div class="hint">Sur iPhone, tu peux prendre une photo ou choisir une image. L’OCR fonctionne dans le navigateur et nécessite Internet au premier chargement.</div><img id="preview" class="preview"><div id="ocrProgressWrap" style="display:none"><div class="progress"><div id="ocrBar"></div></div><div id="ocrState" class="hint">Préparation OCR…</div></div><pre id="ocrText" class="ocrtext"></pre></div><button id="ocrBtn" class="primary" onclick="runOCR()" disabled>Analyser le reçu</button><button class="cancel" onclick="closeScanner()">Fermer</button></div></div>
-<div class="toast" id="toast"></div><div class="nav"><div class="nav-inner"><button class="nav-item active" data-view="home" onclick="go('home')"><b>⌂</b>Accueil</button><button class="nav-item" data-view="purchases" onclick="go('purchases')"><b>◫</b>Achats</button><button class="nav-item" data-view="add" onclick="go('add')"><b>＋</b>Ajouter</button><button class="nav-item" data-view="warranties" onclick="go('warranties')"><b>🛡</b>Garanties</button></div></div>
-<script>
-const KEY='purchaseGuardian.v1_2';let items=JSON.parse(localStorage.getItem(KEY)||'null')||[];let currentFilter='all',scanData='';
-const $=id=>document.getElementById(id),today=()=>new Date().toISOString().slice(0,10),eur=n=>new Intl.NumberFormat('fr-FR',{style:'currency',currency:'EUR'}).format(Number(n)||0),fmt=s=>s?new Date(s+'T00:00:00').toLocaleDateString('fr-FR'):'—';
-function days(s){if(!s)return null;let a=new Date();a.setHours(0,0,0,0);return Math.ceil((new Date(s+'T00:00:00')-a)/86400000)}function persist(){localStorage.setItem(KEY,JSON.stringify(items));render()}function toastMsg(m){$('toast').textContent=m;$('toast').style.display='block';setTimeout(()=>$('toast').style.display='none',1800)}
-function label(i){if(i.status==='refund')return['En attente','red'];if(i.status==='return'){let d=days(i.returnDate);return[d==null?'Retour':d<0?'Expiré':`Retour · ${d} j`,d!=null&&d<=3?'red':'yellow']}if(i.status==='protected')return['Protégé','green'];if(i.status==='done')return['Terminé','grey'];return['À surveiller','blue']}
-function card(i){let [l,c]=label(i),x=i.status==='refund'?`Remboursement attendu ${eur(i.refundAmount)}`:i.status==='protected'?`Garantie jusqu’au ${fmt(i.warrantyDate)}`:`${i.store||'Magasin'} · ${eur(i.price)}`;return `<div class="card"><div class="row"><div class="left"><div class="icon">${i.receipt?'🧾':'🛍️'}</div><div style="min-width:0"><div class="title">${esc(i.product||'Achat')}</div><div class="meta">${esc(x)}</div></div></div><span class="pill ${c}">${l}</span></div><div class="card-actions">${i.status==='refund'?`<button class="small" onclick="refund('${i.id}')">Remboursement reçu</button>`:''}<button class="small" onclick="openEditor('${i.id}')">Modifier</button><button class="small danger" onclick="del('${i.id}')">Supprimer</button></div></div>`}
-function esc(s){return String(s??'').replace(/[&<>\"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]))}function render(){let mp=items.reduce((a,i)=>a+(Number(i.protectedAmount)||0),0);$('money').textContent=eur(mp);$('s1').textContent=items.length;$('s2').textContent=items.filter(i=>i.protectedAmount>0).length;$('s3').textContent=items.filter(i=>i.status==='protected').length;let w=items.filter(i=>i.status==='refund'||i.status==='return').slice(0,4);$('watch').innerHTML=w.length?w.map(card).join(''):'<div class="empty">Rien d’urgent pour le moment.</div>';let f=currentFilter==='all'?items:items.filter(i=>i.status===currentFilter);$('list').innerHTML=f.length?f.map(card).join(''):'<div class="empty">Aucun achat ici.</div>';$('warrantiesList').innerHTML=items.filter(i=>i.status==='protected'||i.warrantyDate).map(card).join('')||'<div class="empty">Aucune garantie enregistrée.</div>'}
-function go(v,f){document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));$(v).classList.add('active');document.querySelectorAll('.nav-item').forEach(x=>x.classList.toggle('active',x.dataset.view===v));if(f){currentFilter=f;render()}}function filterBy(f,b){currentFilter=f;document.querySelectorAll('.filter').forEach(x=>x.classList.remove('active'));b.classList.add('active');render()}
-function openEditor(id){let i=items.find(x=>x.id===id);$('editTitle').textContent=i?'Modifier l’achat':'Ajouter un achat';$('editId').value=i?.id||'';$('product').value=i?.product||'';$('store').value=i?.store||'';$('price').value=i?.price||'';$('purchaseDate').value=i?.purchaseDate||today();$('status').value=i?.status||'watch';$('returnDate').value=i?.returnDate||'';$('warrantyDate').value=i?.warrantyDate||'';$('refundAmount').value=i?.refundAmount||'';$('editSheet').style.display='flex'}function closeEditor(){$('editSheet').style.display='none'}
-function save(){let id=$('editId').value||crypto.randomUUID(),old=items.find(x=>x.id===id)||{};let obj={...old,id,product:$('product').value.trim()||'Achat',store:$('store').value.trim(),price:Number($('price').value)||0,purchaseDate:$('purchaseDate').value,status:$('status').value,returnDate:$('returnDate').value,warrantyDate:$('warrantyDate').value,refundAmount:Number($('refundAmount').value)||0};let n=items.findIndex(x=>x.id===id);n>=0?items[n]=obj:items.unshift(obj);closeEditor();persist();toastMsg('Achat enregistré ✓')}
-function del(id){if(confirm('Supprimer cet achat ?')){items=items.filter(x=>x.id!==id);persist()}}function refund(id){let i=items.find(x=>x.id===id);if(!i)return;i.protectedAmount=(Number(i.protectedAmount)||0)+(Number(i.refundAmount)||0);i.refundAmount=0;i.status='done';persist();toastMsg('Remboursement ajouté à Money Protected ✓')}
-function openScanner(){$('scanSheet').style.display='flex'}function closeScanner(){$('scanSheet').style.display='none'}
-async function receiptSelected(e){let file=e.target.files?.[0];if(!file)return;scanData=await resizeImage(file,900,.72);$('preview').src=scanData;$('preview').style.display='block';$('ocrBtn').disabled=false;$('ocrText').style.display='none'}
-function resizeImage(file,max,q){return new Promise((res,rej)=>{let r=new FileReader;r.onload=()=>{let im=new Image;im.onload=()=>{let s=Math.min(1,max/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.round(im.width*s);c.height=Math.round(im.height*s);c.getContext('2d').drawImage(im,0,0,c.width,c.height);res(c.toDataURL('image/jpeg',q))};im.onerror=rej;im.src=r.result};r.onerror=rej;r.readAsDataURL(file)})}
-async function runOCR(){if(!scanData)return;if(!window.Tesseract){toastMsg('OCR indisponible : connexion Internet requise');return}$('ocrBtn').disabled=true;$('ocrProgressWrap').style.display='block';$('ocrText').style.display='none';try{let r=await Tesseract.recognize(scanData,'fra+eng',{logger:m=>{if(m.progress!=null){$('ocrBar').style.width=Math.round(m.progress*100)+'%';$('ocrState').textContent=(m.status||'Analyse')+' · '+Math.round(m.progress*100)+'%'}}});let text=r.data.text||'';$('ocrText').textContent=text;$('ocrText').style.display='block';let p=parseReceipt(text);closeScanner();openEditor();$('product').value=p.product;$('store').value=p.store;$('price').value=p.price||'';$('purchaseDate').value=p.date||today();toastMsg('Reçu analysé — vérifie les champs avant d’enregistrer')}catch(e){console.error(e);toastMsg('OCR impossible. Tu peux saisir les données manuellement.')}finally{$('ocrBtn').disabled=false}}
-function parseReceipt(t){let lines=t.split(/\n/).map(x=>x.trim()).filter(Boolean);let store=lines.find(x=>x.length>2&&!/ticket|reçu|receipt|merci|total|tva/i.test(x))||'';let prices=[...t.matchAll(/(?:€\s*)?(\d{1,5}[.,]\d{2})(?:\s*€)?/g)].map(m=>Number(m[1].replace(',','.'))).filter(n=>n>0&&n<100000);let totalMatches=[...t.matchAll(/(?:total|à payer|a payer|montant)[^\d]{0,20}(\d{1,5}[.,]\d{2})/gi)].map(m=>Number(m[1].replace(',','.')));let price=totalMatches.at(-1)||Math.max(0,...prices);let dm=t.match(/\b(\d{2})[\/.-](\d{2})[\/.-](\d{2,4})\b/),date='';if(dm){let y=dm[3].length===2?'20'+dm[3]:dm[3];date=`${y}-${dm[2]}-${dm[1]}`}return{store:store.slice(0,50),product:'Achat '+(store?store.slice(0,24):'scanné'),price,date}}
-if('serviceWorker'in navigator)navigator.serviceWorker.register('./service-worker.js').catch(()=>{});render();
-</script></body></html>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0b0d12">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Purchase Guardian">
+  <meta name="description" content="Protège tes achats, retours, remboursements et garanties.">
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="styles.css">
+  <title>Purchase Guardian</title>
+  <script defer src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+  <script defer src="receipt-engine.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+<div class="app">
+  <div class="top"><div class="brand">Purchase Guardian</div><div class="badge">V1.3 FR</div></div>
+
+  <main id="home" class="view active">
+    <section class="hero">
+      <div class="eyebrow">Money protected</div>
+      <div class="money"><span id="moneyProtected">0,00 €</span> <small>cette année</small></div>
+      <div class="sub">Centralise tes preuves d’achat, surveille tes retours, remboursements et garanties. Les données de cette V1 restent sur ton appareil.</div>
+      <div class="stats">
+        <div class="stat"><b id="statPurchases">0</b><span>achats</span></div>
+        <div class="stat"><b id="statRefunds">0</b><span>remboursés</span></div>
+        <div class="stat"><b id="statWarranties">0</b><span>garanties</span></div>
+      </div>
+      <div class="promo"><strong>Offre lancement — 9,99 €</strong><span>Prix fondateur prévu pendant 14 jours après le lancement public.</span></div>
+    </section>
+
+    <div class="section-title">À surveiller</div>
+    <div id="watchList"></div>
+
+    <div class="section-title">Actions rapides</div>
+    <div class="quick">
+      <button class="action" onclick="openScanner()">▣ Scanner un ticket<span>Caméra ou photothèque + OCR français</span></button>
+      <button class="action" onclick="openEditor()">＋ Ajouter manuellement<span>Pour les achats sans ticket lisible</span></button>
+      <button class="action" onclick="switchView('purchases','refund')">↩ Remboursements<span>Voir l’argent encore attendu</span></button>
+      <button class="action" onclick="switchView('warranties')">🛡 Garanties<span>Voir les protections enregistrées</span></button>
+    </div>
+  </main>
+
+  <main id="purchases" class="view">
+    <div class="section-title" style="margin-top:2px">Mes achats</div>
+    <div class="filters">
+      <button class="filter active" data-filter="all" onclick="setFilter('all',this)">Tous</button>
+      <button class="filter" data-filter="return" onclick="setFilter('return',this)">Retours</button>
+      <button class="filter" data-filter="refund" onclick="setFilter('refund',this)">Remboursements</button>
+      <button class="filter" data-filter="protected" onclick="setFilter('protected',this)">Garanties</button>
+    </div>
+    <div id="purchaseList"></div>
+  </main>
+
+  <main id="add" class="view">
+    <div class="empty">
+      <div style="font-size:36px">🧾</div>
+      <h3>Ajouter une preuve d’achat</h3>
+      <p>Le scan V1.3 reconnaît plusieurs enseignes françaises et tente d’extraire le total, la date et le canal d’achat.</p>
+      <button class="primary" onclick="openScanner()">Scanner un ticket</button>
+      <button class="secondary" style="margin-top:9px" onclick="openEditor()">Saisie manuelle</button>
+    </div>
+  </main>
+
+  <main id="warranties" class="view">
+    <div class="section-title" style="margin-top:2px">Garanties</div>
+    <div id="warrantyList"></div>
+  </main>
+</div>
+
+<!-- Scanner -->
+<div class="sheet-wrap" id="scanWrap" onclick="if(event.target===this)closeScanner()">
+  <div class="sheet">
+    <div class="grab"></div>
+    <h3>Scanner un ticket</h3>
+    <div class="scan-card">
+      <div class="scan-actions">
+        <button class="primary" onclick="document.getElementById('cameraInput').click()">📷 Caméra</button>
+        <button class="secondary" onclick="document.getElementById('galleryInput').click()">🖼 Photos</button>
+      </div>
+      <input id="cameraInput" type="file" accept="image/*" capture="environment" hidden>
+      <input id="galleryInput" type="file" accept="image/*" hidden>
+      <div class="preview" id="scanPreview"><img id="scanImage" alt="Prévisualisation du ticket"></div>
+      <div class="scan-status" id="scanStatus">Prends une photo nette du ticket ou choisis une image.</div>
+      <div class="progress-line"><div id="scanProgressBar"></div></div>
+      <div class="extract-box" id="scanExtract">
+        <div class="extract-grid">
+          <div class="extract-item"><small>Enseigne</small><b id="scanMerchant">—</b></div>
+          <div class="extract-item"><small>Total détecté</small><b id="scanTotal">—</b></div>
+          <div class="extract-item"><small>Date</small><b id="scanDate">—</b></div>
+          <div class="extract-item"><small>Canal probable</small><b id="scanChannel">—</b></div>
+        </div>
+        <span class="confidence" id="scanConfidence">Confiance OCR</span>
+      </div>
+    </div>
+    <button class="primary" id="useScanBtn" style="display:none" onclick="useScanResult()">Utiliser ces informations</button>
+    <div class="notice">L’OCR peut se tromper. Vérifie toujours le vendeur, le montant, la date et les échéances avant d’enregistrer l’achat.</div>
+    <button class="cancel" onclick="closeScanner()">Fermer</button>
+  </div>
+</div>
+
+<!-- Editor -->
+<div class="sheet-wrap" id="sheetWrap" onclick="if(event.target===this)closeEditor()">
+  <div class="sheet">
+    <div class="grab"></div>
+    <h3 id="sheetTitle">Ajouter un achat</h3>
+    <input type="hidden" id="editId">
+
+    <div class="label">Produit</div>
+    <input id="product" placeholder="Ex. AirPods Pro">
+    <div class="split">
+      <div><div class="label">Magasin / site</div><input id="store" placeholder="Fnac"></div>
+      <div><div class="label">Prix (€)</div><input id="price" type="number" min="0" step="0.01" placeholder="279"></div>
+    </div>
+    <div class="split">
+      <div><div class="label">Date d’achat</div><input id="purchaseDate" type="date"></div>
+      <div><div class="label">Canal</div><select id="channel"><option value="unknown">À confirmer</option><option value="online">En ligne / à distance</option><option value="store">En magasin</option></select></div>
+    </div>
+    <div class="label">Date de réception / livraison</div>
+    <input id="deliveryDate" type="date">
+
+    <div class="split">
+      <div><div class="label">Délai retour indiqué (jours)</div><input id="manualReturnDays" type="number" min="0" placeholder="Ex. 30"></div>
+      <div><div class="label">Garantie indicative (mois)</div><input id="warrantyMonths" type="number" min="0" value="24"></div>
+    </div>
+    <button class="secondary" onclick="applyDeadlineEstimate()">Estimer les échéances</button>
+    <div class="notice" id="deadlineHint">Les estimations sont informatives et doivent être vérifiées avec le vendeur et les conditions applicables.</div>
+
+    <div class="split">
+      <div><div class="label">Deadline retour</div><input id="returnDate" type="date"></div>
+      <div><div class="label">Fin de garantie</div><input id="warrantyDate" type="date"></div>
+    </div>
+    <div class="label">Statut</div>
+    <select id="status"><option value="watch">À surveiller</option><option value="return">Retour possible</option><option value="refund">En remboursement</option><option value="protected">Garantie active</option><option value="done">Terminé</option></select>
+    <div class="split">
+      <div><div class="label">Remboursement attendu (€)</div><input id="refundAmount" type="number" min="0" step="0.01" placeholder="0"></div>
+      <div><div class="label">Argent déjà protégé (€)</div><input id="protectedAmount" type="number" min="0" step="0.01" placeholder="0"></div>
+    </div>
+    <button class="primary" style="margin-top:12px" onclick="savePurchase()">Enregistrer</button>
+    <button class="cancel" onclick="closeEditor()">Annuler</button>
+  </div>
+</div>
+
+<!-- Receipt viewer -->
+<div class="sheet-wrap" id="receiptViewWrap" onclick="if(event.target===this)closeReceiptView()">
+  <div class="sheet"><div class="grab"></div><h3>Preuve d’achat</h3><div class="preview" style="display:block"><img id="receiptViewImage" alt="Ticket enregistré"></div><button class="cancel" onclick="closeReceiptView()">Fermer</button></div>
+</div>
+
+<div class="toast" id="toast"></div>
+<nav class="nav">
+  <div class="nav-inner">
+    <button class="nav-item active" data-view="home" onclick="switchView('home')"><b>⌂</b>Accueil</button>
+    <button class="nav-item" data-view="purchases" onclick="switchView('purchases')"><b>◫</b>Achats</button>
+    <button class="nav-item" data-view="add" onclick="switchView('add')"><b>＋</b>Ajouter</button>
+    <button class="nav-item" data-view="warranties" onclick="switchView('warranties')"><b>🛡</b>Garanties</button>
+  </div>
+</nav>
+</body>
+</html>
