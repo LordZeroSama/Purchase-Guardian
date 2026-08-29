@@ -12,12 +12,14 @@
   <link rel="stylesheet" href="styles.css">
   <title>Purchase Guardian</title>
   <script defer src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+  <script defer src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
   <script defer src="receipt-engine.js"></script>
   <script defer src="app.js"></script>
+  <script defer src="barcode-scanner.js"></script>
 </head>
 <body>
 <div class="app">
-  <div class="top"><div class="brand">Purchase Guardian</div><div class="badge">V1.3 FR</div></div>
+  <div class="top"><div class="brand">Purchase Guardian</div><div class="badge">V1.4 FR</div></div>
 
   <main id="home" class="view active">
     <section class="hero">
@@ -37,6 +39,7 @@
 
     <div class="section-title">Actions rapides</div>
     <div class="quick">
+      <button class="action" onclick="openBarcodeScanner()">▥ Scanner un produit<span>EAN, UPC, code-barres ou QR avec la caméra</span></button>
       <button class="action" onclick="openScanner()">▣ Scanner un ticket<span>Caméra ou photothèque + OCR français</span></button>
       <button class="action" onclick="openEditor()">＋ Ajouter manuellement<span>Pour les achats sans ticket lisible</span></button>
       <button class="action" onclick="switchView('purchases','refund')">↩ Remboursements<span>Voir l’argent encore attendu</span></button>
@@ -59,8 +62,9 @@
     <div class="empty">
       <div style="font-size:36px">🧾</div>
       <h3>Ajouter une preuve d’achat</h3>
-      <p>Le scan V1.3 reconnaît plusieurs enseignes françaises et tente d’extraire le total, la date et le canal d’achat.</p>
-      <button class="primary" onclick="openScanner()">Scanner un ticket</button>
+      <p>Scanne d’abord le produit ou le ticket, ou renseigne l’achat manuellement.</p>
+      <button class="primary" onclick="openBarcodeScanner()">Scanner code-barres / QR</button>
+      <button class="secondary" style="margin-top:9px" onclick="openScanner()">Scanner un ticket</button>
       <button class="secondary" style="margin-top:9px" onclick="openEditor()">Saisie manuelle</button>
     </div>
   </main>
@@ -71,7 +75,7 @@
   </main>
 </div>
 
-<!-- Scanner -->
+<!-- Ticket scanner -->
 <div class="sheet-wrap" id="scanWrap" onclick="if(event.target===this)closeScanner()">
   <div class="sheet">
     <div class="grab"></div>
@@ -102,6 +106,36 @@
   </div>
 </div>
 
+<!-- Barcode / QR scanner -->
+<div class="sheet-wrap" id="barcodeWrap" onclick="if(event.target===this)closeBarcodeScanner()">
+  <div class="sheet barcode-sheet">
+    <div class="grab"></div>
+    <h3>Scanner un produit</h3>
+    <div class="scan-card">
+      <div id="barcodeReader" class="barcode-reader"></div>
+      <div class="barcode-frame-hint">EAN / UPC / Code 128 / QR / Data Matrix</div>
+      <div class="scan-status" id="barcodeStatus">Place le code dans le cadre puis lance la caméra.</div>
+      <div class="scan-actions barcode-controls">
+        <button class="primary" id="barcodeStartBtn" onclick="startBarcodeCamera()">📷 Lancer la caméra</button>
+        <button class="secondary" id="barcodeStopBtn" style="display:none" onclick="stopBarcodeCamera()">Arrêter</button>
+      </div>
+      <button class="secondary" style="margin-top:8px" onclick="document.getElementById('barcodePhotoInput').click()">🖼 Scanner depuis une photo</button>
+      <input id="barcodePhotoInput" type="file" accept="image/*" hidden>
+      <div class="extract-box" id="barcodeResult">
+        <div class="extract-grid">
+          <div class="extract-item"><small>Format</small><b id="barcodeFormat">—</b></div>
+          <div class="extract-item"><small>Code détecté</small><b id="barcodeValue" class="code-value">—</b></div>
+        </div>
+        <div id="barcodeLookup" class="barcode-lookup">Le produit sera recherché automatiquement si le code ressemble à un EAN/UPC.</div>
+      </div>
+    </div>
+    <button class="primary" id="barcodeUseBtn" style="display:none" onclick="useBarcodeResult()">Utiliser ce code</button>
+    <button class="secondary" id="barcodeOpenBtn" style="display:none;margin-top:8px" onclick="openDetectedQr()">Ouvrir le lien QR</button>
+    <div class="notice">Un code-barres identifie un produit, mais les bases ouvertes ne connaissent pas forcément toutes les références. Dans ce cas, Purchase Guardian conserve le code et tu complètes le nom manuellement.</div>
+    <button class="cancel" onclick="closeBarcodeScanner()">Fermer</button>
+  </div>
+</div>
+
 <!-- Editor -->
 <div class="sheet-wrap" id="sheetWrap" onclick="if(event.target===this)closeEditor()">
   <div class="sheet">
@@ -111,6 +145,20 @@
 
     <div class="label">Produit</div>
     <input id="product" placeholder="Ex. AirPods Pro">
+    <div class="label">Marque</div>
+    <input id="brand" placeholder="Ex. Apple">
+
+    <div class="barcode-editor">
+      <div style="min-width:0;flex:1">
+        <div class="label">Code produit / QR</div>
+        <input id="barcode" placeholder="EAN, UPC, QR…">
+        <input type="hidden" id="barcodeFormatField">
+        <input type="hidden" id="barcodeSource">
+      </div>
+      <button class="small-btn scan-inline" type="button" onclick="scanBarcodeIntoCurrentPurchase()">Scanner</button>
+    </div>
+    <div class="notice barcode-hint" id="barcodeHint">Tu peux scanner le code-barres du produit pour conserver sa référence exacte.</div>
+
     <div class="split">
       <div><div class="label">Magasin / site</div><input id="store" placeholder="Fnac"></div>
       <div><div class="label">Prix (€)</div><input id="price" type="number" min="0" step="0.01" placeholder="279"></div>
